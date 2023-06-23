@@ -9,25 +9,23 @@ import (
 )
 
 func ObserveGoroutine() error {
-	// スタックトレース
 	buf := make([]byte, 1024)
 
 	for {
-		// すべてのゴルーチンのスタックトレースを取得
-		// falseにすると現在動いているgoroutineしかとらないようにすることができる
+		fmt.Print("\033[2J\033[H")
+		// 全てのgoroutineのスタックトレースを取得する
 		n := runtime.Stack(buf, true)
 		stackTrace := string(bytes.TrimRight(buf[:n], "\x00"))
 		goroutine_ids := extractGoroutineID(stackTrace)
 
-		fmt.Printf("< Stack trace >\n")
+		fmt.Printf("< goroutine status >\n")
 
 		for _, goroutine_id := range goroutine_ids {
 			fmt.Println("goroutine " + goroutine_id[1]+ " is living")
 		}
-		// bufの中からスタックトレースが書き込まれた部分を表示される
-		fmt.Printf("< Stack trace >\n%s\n", stackTrace)
+		// fmt.Printf("< Stack trace >\n%s\n", stackTrace)
 
-		time.Sleep(3 * time.Second)
+		time.Sleep(5 * time.Second)
 	}
 }
 
