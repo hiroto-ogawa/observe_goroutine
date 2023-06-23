@@ -10,6 +10,7 @@ import (
 
 func ObserveGoroutine() error {
 	buf := make([]byte, 1024)
+	var previous_goroutine_ids [][]string
 
 	for {
 		fmt.Print("\033[2J\033[H")
@@ -22,10 +23,23 @@ func ObserveGoroutine() error {
 
 		for _, goroutine_id := range goroutine_ids {
 			fmt.Println("goroutine " + goroutine_id[1]+ " is living")
-		}
-		// fmt.Printf("< Stack trace >\n%s\n", stackTrace)
 
-		time.Sleep(5 * time.Second)
+			elements := make(map[string]bool)
+
+			for _, goroutine_id := range goroutine_ids {
+				elements[goroutine_id[1]] = true
+			}
+
+			for _, previous_goroutine_id := range previous_goroutine_ids {
+				if !elements[previous_goroutine_id[1]] {
+					fmt.Println("goroutine " + previous_goroutine_id[1] + " is dead")
+				}
+			}
+		}
+
+		previous_goroutine_ids = goroutine_ids // 前回のループのgoroutine_idsを更新
+
+		time.Sleep(10 * time.Second)
 	}
 }
 

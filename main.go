@@ -16,6 +16,9 @@ func main() {
 			}
 		}()
 
+		fmt.Println("goroutine生成")
+		fmt.Println("testと入力するとgoroutineが終了します\n")
+
 		scanner := bufio.NewScanner(os.Stdin)
 		// ユーザーからの入力を1行ずつ読み込んで出力する
 		for scanner.Scan() {
